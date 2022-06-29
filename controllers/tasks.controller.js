@@ -38,17 +38,16 @@ const getAllTasks = catchAsync(async (req, res, next) => {
 
 const getTasksByStatus = catchAsync(async (req, res, next) => {
   const tasks = await Task.findAll({
-    where: {status: 'active, completed, late, cancelled'},
     include: User,
   })
 
-  if(!tasks) {
-    return next(new AppError('No tasks found', 404));
+  if(tasks.status === 'active, cancelled completed, late ') {
+    res.status(200).json({
+      status: 'success',
+      tasks,
+    })
   }else {
-     res.status(200).json({
-    status: 'success',
-    tasks,
-  })
+     return next(new AppError('No tasks found', 404));
   }
  
 })
